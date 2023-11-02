@@ -3,7 +3,13 @@ import { setActivePinia, createPinia } from "pinia";
 import { fetchErrorResponse, fetchInvalidJsonResponse, fetchJsonResponse } from "../test_utils";
 
 import { useCategoriesStore, CATEGORIES_URL } from "../categories";
-import { DATA } from "../../models/__tests__/categories.spec";
+import { DATA as CATEGORY_DATA } from "../../models/__tests__/categories.spec";
+
+const DATA = {
+    region: CATEGORY_DATA,
+    gene: CATEGORY_DATA,
+    domain: CATEGORY_DATA,
+};
 
 global.fetch = vi.fn();
 
@@ -53,7 +59,7 @@ describe("Categories Store", () => {
             expect(store.error).toBe("");
             await store.getCategories();
             expect(store.status).toBe("error");
-            expect(store.error).toBe("ruhroh");
+            expect(store.error).toBe("Error: ruhroh");
         });
         it("sets an error status on json decode errors", async () => {
             // @ts-ignore

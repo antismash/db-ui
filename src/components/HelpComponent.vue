@@ -7,6 +7,7 @@ import HelpFigure from "./common/HelpFigure.vue";
 
 const store = useCategoriesStore();
 await store.getCategories();
+const categories = store.categories.getCategoriesByType("region");
 </script>
 
 <template>
@@ -15,11 +16,11 @@ await store.getCategories();
         <TabArea>
             <CustomTab title="Seach categories">
                 <dl>
-                    <template v-for="opt in store.categories.options" :key="opt.label">
+                    <template v-for="opt in categories?.options" :key="opt.label">
                         <dt>{{ opt.label }}</dt>
                         <dd>{{ opt.description }}</dd>
                     </template>
-                    <template v-for="group in store.categories.groups" :key="group.header">
+                    <template v-for="group in categories?.groups" :key="group.header">
                         <CollapsibleContent :title="group.header">
                             <dt>{{ group.header }}</dt>
                             <dd>
