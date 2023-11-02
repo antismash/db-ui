@@ -7,10 +7,11 @@ import StoredQueryResult from "@/components/common/StoredQueryResult.vue";
 import IconArrowLeft from "./icons/IconArrowLeft.vue";
 import IconHelp from "@/components/icons/IconHelp.vue";
 import IconTrash from "./icons/IconTrash.vue";
+import IconSpinner from "./icons/IconSpinner.vue";
 
 import { useJobsStore } from "@/stores/jobs";
 import { Job, JobType } from "@/models/jobs";
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -20,7 +21,7 @@ const props = defineProps<{
 
 const store = useJobsStore();
 
-const job = await store.getJob(props.jobId);
+const job = ref(await store.getJob(props.jobId));
 
 function getDisplayType(job: Job) {
     switch (job.jobtype) {
@@ -37,33 +38,46 @@ function getDisplayType(job: Job) {
 
 const deleteModalOpen = ref(false);
 function deleteJob() {
-    if (!job) {
+    if (!job.value) {
         return;
     }
-    if (job.status == "failed") {
-        store.removeJob(job.id);
+    if (job.value.status == "failed") {
+        store.removeJob(job.value.id);
         router.push({ name: "jobs" });
     }
 
-    if (job.status != "done") {
+    if (job.value?.status != "done") {
         return;
     }
     deleteModalOpen.value = true;
 }
 
 function deleteJobConfirmed() {
-    if (!job) {
+    if (!job.value) {
         return;
     }
-    store.removeJob(job.id);
+    store.removeJob(job.value.id);
     deleteModalOpen.value = false;
     router.push({ name: "jobs" });
 }
+
+let intervalId: ReturnType<typeof setInterval>;
+
+onMounted(async () => {
+    intervalId = setInterval(async () => {
+        await store.update();
+        job.value = await store.getJob(props.jobId);
+    }, 1000);
+});
+
+onUnmounted(() => {
+    clearInterval(intervalId);
+});
 </script>
 
 <template>
     <div class="job-nav">
-        <button @click="$router.push({ name: 'jobs' })"><IconArrowLeft /> Back to overview</button>
+        <button @click="$router.push({ name: 'jobs' })"><IconArrowLeft /> Back to job list</button>
         <button v-if="job && ['done', 'failed'].includes(job.status)" @click="deleteJob">
             <IconTrash /> Remove job
         </button>
@@ -85,7 +99,7 @@ function deleteJobConfirmed() {
             :filename="job.results"
         />
         <div v-else-if="job.status == 'failed'">Job failed: {{ job.results?.error }}</div>
-        <div v-else>Job is still {{ job.status }}, please try again later.</div>
+        <div v-else>Job is still {{ job.status }}, please wait. <IconSpinner /></div>
     </div>
     <div v-else>Please select a valid job ID.</div>
     <DialogView :open="deleteModalOpen" class="dialog">
