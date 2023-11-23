@@ -56,7 +56,7 @@ function changeSearchType(type: string) {
             break;
         case "gene":
         case "domain":
-            if (store.return_type == "fasta") {
+            if (store.return_type == "fasta" || store.return_type == "genbank") {
                 store.return_type = "fastaa";
             }
             break;
@@ -123,6 +123,13 @@ function changeSearchType(type: string) {
                         :class="store.return_type == 'fastaa' ? 'active' : ''"
                         @click="store.return_type = 'fastaa'"
                         >AA FASTA</label
+                    >
+                    <label
+                        v-if="!['gene', 'domain'].includes(store.search_type)"
+                        class="btn btn-info"
+                        :class="store.return_type == 'genbank' ? 'active' : ''"
+                        @click="store.return_type = 'genbank'"
+                        >GenBank</label
                     >
                 </div>
             </div>
