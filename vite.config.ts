@@ -17,7 +17,7 @@ export default defineConfig({
             "/api": "http://localhost:5566",
             "/go": "http://localhost:5566",
             "/output": "http://localhost:5566",
-            "/jobs": "http://localhost:5566",
+            "/job_downloads": "http://localhost:5566",
         },
     },
 });
