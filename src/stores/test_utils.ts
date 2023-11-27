@@ -15,3 +15,7 @@ export function fetchInvalidJsonResponse(error: Error | string) {
 export function fetchErrorResponse(statusText: string) {
     return { ok: false, statusText: statusText, status: 418 };
 }
+
+export function fetchEmptyResponse() {
+    return { ok: true, status: 204 };
+}

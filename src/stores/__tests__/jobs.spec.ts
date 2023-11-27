@@ -1,6 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
-import { fetchErrorResponse, fetchInvalidJsonResponse, fetchJsonResponse } from "../test_utils";
+import {
+    fetchErrorResponse,
+    fetchInvalidJsonResponse,
+    fetchJsonResponse,
+    fetchEmptyResponse,
+} from "../test_utils";
 
 import { useJobsStore, JOB_URL_BASE } from "../jobs";
 import { Job } from "@/models/jobs";
@@ -39,12 +44,15 @@ describe("Jobs Store", () => {
         });
     });
     describe("removeJob", () => {
-        it("removes a job", () => {
+        it("removes a job", async () => {
             const store = useJobsStore();
             const job = new Job("test", "/api/test", "clusterblast", "pending");
             store._jobs.set(job.id, job);
             expect(store.jobs.length).toEqual(1);
-            store.removeJob("test");
+            // @ts-ignore
+            fetch.mockResolvedValue(fetchEmptyResponse());
+            await store.removeJob("test");
+            expect(fetch).toHaveBeenCalledWith(`${JOB_URL_BASE}/test`, { method: "DELETE" });
             expect(store.jobs.length).toEqual(0);
         });
     });
@@ -124,12 +132,15 @@ describe("Jobs Store", () => {
         });
         it("removes jobs older than seven days", async () => {
             const store = useJobsStore();
+            // @ts-ignore
+            fetch.mockResolvedValue(fetchEmptyResponse());
             const eightDaysAgo = new Date();
             eightDaysAgo.setDate(eightDaysAgo.getDate() - 8);
             store.addJob(new Job("delete-me", "", "storedquery", "done", eightDaysAgo));
             expect(store._jobs.size).toBe(1);
             await store.update();
             expect(store._jobs.size).toBe(0);
+            expect(fetch).toHaveBeenCalledWith(`${JOB_URL_BASE}/delete-me`, { method: "DELETE" });
         });
     });
 });

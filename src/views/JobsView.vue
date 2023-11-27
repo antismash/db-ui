@@ -24,9 +24,9 @@ function getIconType(job: Job) {
     }
 }
 
-function deleteJob(job: Job) {
+async function deleteJob(job: Job) {
     if (job.status == "failed") {
-        store.removeJob(job.id);
+        await store.removeJob(job.id);
     }
 
     if (job.status != "done") {
@@ -36,11 +36,11 @@ function deleteJob(job: Job) {
     deleteModalOpen.value = true;
 }
 
-function deleteJobConfirmed() {
+async function deleteJobConfirmed() {
     if (!jobToDelete.value) {
         return;
     }
-    store.removeJob(jobToDelete.value.id);
+    await store.removeJob(jobToDelete.value.id);
     deleteModalOpen.value = false;
     jobToDelete.value = undefined;
 }

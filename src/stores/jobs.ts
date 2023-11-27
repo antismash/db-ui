@@ -3,7 +3,7 @@ import { defineStore, acceptHMRUpdate } from "pinia";
 import { Job } from "@/models/jobs";
 import { parse, stringify } from "superjson";
 
-export const JOB_URL_BASE = "/api/v1.0/job";
+export const JOB_URL_BASE = "/api/job";
 
 export const useJobsStore = defineStore(
     "jobs",
@@ -42,8 +42,9 @@ export const useJobsStore = defineStore(
             return job;
         }
 
-        function removeJob(jobId: string) {
+        async function removeJob(jobId: string) {
             _jobs.value.delete(jobId);
+            await fetch(`${JOB_URL_BASE}/${jobId}`, { method: "DELETE" });
         }
 
         async function update() {
@@ -52,7 +53,7 @@ export const useJobsStore = defineStore(
                 cutoff.setDate(cutoff.getDate() - 7);
                 // for some reason superjson doesn't convert job.submitted back to a Date, so let's do it here
                 if (new Date(job.submitted) < cutoff) {
-                    removeJob(job.id);
+                    await removeJob(job.id);
                 }
 
                 if (!job.nextUrl) {
