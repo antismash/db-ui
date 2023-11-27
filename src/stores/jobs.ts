@@ -48,6 +48,13 @@ export const useJobsStore = defineStore(
 
         async function update() {
             _jobs.value.forEach(async (job) => {
+                const cutoff = new Date();
+                cutoff.setDate(cutoff.getDate() - 7);
+                // for some reason superjson doesn't convert job.submitted back to a Date, so let's do it here
+                if (new Date(job.submitted) < cutoff) {
+                    removeJob(job.id);
+                }
+
                 if (!job.nextUrl) {
                     return;
                 }

@@ -122,5 +122,14 @@ describe("Jobs Store", () => {
             expect(updatedJob?.status).toBe("failed");
             expect(updatedJob?.nextUrl).toBe("");
         });
+        it("removes jobs older than seven days", async () => {
+            const store = useJobsStore();
+            const eightDaysAgo = new Date();
+            eightDaysAgo.setDate(eightDaysAgo.getDate() - 8);
+            store.addJob(new Job("delete-me", "", "storedquery", "done", eightDaysAgo));
+            expect(store._jobs.size).toBe(1);
+            await store.update();
+            expect(store._jobs.size).toBe(0);
+        });
     });
 });
