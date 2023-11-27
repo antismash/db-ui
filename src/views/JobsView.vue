@@ -65,6 +65,7 @@ onUnmounted(() => {
 <template>
     <main class="container">
         <h1>Jobs</h1>
+        <div class="tip">Jobs will be deleted after 7 days.</div>
         <div>
             <table>
                 <thead>
@@ -121,5 +122,8 @@ onUnmounted(() => {
 }
 .__job_link {
     cursor: pointer;
+}
+.tip {
+    text-align: right;
 }
 </style>
