@@ -217,7 +217,7 @@ export class QueryTerm {
 
     // termType == "expr"
     category: string = "";
-    value?: string | number | QueryModuleTerm = undefined;
+    value: string | number | QueryModuleTerm = "";
     filters: QueryFilter[] = [];
     count: number = 1;
 
@@ -239,7 +239,7 @@ export class QueryTerm {
         this.right = new QueryTerm("expr");
 
         this.category = "";
-        this.value = undefined;
+        this.value = "";
         this.filters.length = 0;
         this.count = 1;
     }
@@ -387,7 +387,7 @@ export class QueryTerm {
         this.operation = undefined;
         this.category = "";
         this.filters.length = 0;
-        this.value = undefined;
+        this.value = "";
         this.count = 1;
     }
 }
