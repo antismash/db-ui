@@ -49,7 +49,7 @@ const citation = store.latest;
 
         <p style="text-align: center">
             <strong class="well"
-                >This is the antiSMASH database version 4, last updated 2023-11-29.</strong
+                >This is the antiSMASH database version 5beta1, last updated 2025-06-23.</strong
             >
         </p>
         <h4>To cite the antiSMASH database, please reference</h4>
