@@ -40,6 +40,16 @@ function getCbhStyle(region: any) {
 
     return `background-image: linear-gradient(to left, ${color}, ${color} ${region.best_mibig_hit_similarity}%, #ffffff00 ${region.best_mibig_hit_similarity}%)`;
 }
+
+function getSimilarityLevel(region: any) {
+    if (region.best_mibig_hit_similarity > 75) {
+        return "High";
+    } else if (region.best_mibig_hit_similarity > 50) {
+        return "Medium";
+    } else {
+        return "Low";
+    }
+}
 </script>
 
 <template>
@@ -52,9 +62,8 @@ function getCbhStyle(region: any) {
                 <th>From</th>
                 <th>To</th>
                 <th>Edge</th>
-                <th>Most similar MIBiG cluser</th>
-                <th>Similarity</th>
-                <th>MIBiG BGC-ID</th>
+                <th>Similarity confidence</th>
+                <th>Most similar MIBiG cluster</th>
             </tr>
         </thead>
         <tbody>
@@ -79,14 +88,14 @@ function getCbhStyle(region: any) {
                 <td class="digits">{{ region.end_pos }}</td>
                 <td>{{ region.contig_edge ? "Yes" : "No" }}</td>
                 <template v-if="region.best_mibig_hit_acc">
-                    <td>{{ region.best_mibig_hit_description }}</td>
                     <td class="digits" :style="getCbhStyle(region)">
-                        {{ region.best_mibig_hit_similarity }}
+                        {{ getSimilarityLevel(region) }}
                     </td>
                     <td>
-                        <a :href="getMibigLink(region)" class="link-external">{{
-                            region.best_mibig_hit_acc
-                        }}</a>
+                        <a :href="getMibigLink(region)" class="link-external">
+                        {{ region.best_mibig_hit_description }}
+                        ({{ region.best_mibig_hit_acc }})
+                        </a>
                     </td>
                 </template>
                 <template v-else>
