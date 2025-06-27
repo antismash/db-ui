@@ -64,6 +64,7 @@ function getSimilarityLevel(region: any) {
                 <th>Edge</th>
                 <th>Similarity confidence</th>
                 <th>Most similar MIBiG cluster</th>
+                <th>In strain collection</th>
             </tr>
         </thead>
         <tbody>
@@ -93,16 +94,26 @@ function getSimilarityLevel(region: any) {
                     </td>
                     <td>
                         <a :href="getMibigLink(region)" class="link-external">
-                        {{ region.best_mibig_hit_description }}
-                        ({{ region.best_mibig_hit_acc }})
+                            {{ region.best_mibig_hit_description }}
+                            ({{ region.best_mibig_hit_acc }})
                         </a>
                     </td>
                 </template>
                 <template v-else>
                     <td></td>
                     <td></td>
-                    <td></td>
                 </template>
+                <td>
+                    <span v-if="region.strain_collection.nbc" class="badge">{{
+                        region.strain_collection.nbc
+                    }}</span>
+                    <span v-if="region.strain_collection.npdc" class="badge">{{
+                        region.strain_collection.npdc
+                    }}</span>
+                    <span v-if="region.strain_collection.dsmz" class="badge">{{
+                        region.strain_collection.dsmz
+                    }}</span>
+                </td>
             </tr>
         </tbody>
     </table>
