@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { downloadTsv } from "@/utils/tsv";
+
 const props = defineProps<{
     hits: any[];
 }>();
@@ -6,10 +8,15 @@ const props = defineProps<{
 function getAreaLink(hit: any) {
     return `/area?record=${hit.s_acc}&start=${hit.s_rec_start}&end=${hit.s_rec_end}`;
 }
+
+function triggerDownload(){
+        downloadTsv(props.hits, 'clusterblast_results.tsv');
+}
 </script>
 
 <template>
     <div v-if="props.hits.length > 0">
+        <button class="dl-button" @click="triggerDownload">Download TSV</button>
         <table>
             <thead>
                 <tr>
@@ -37,5 +44,8 @@ function getAreaLink(hit: any) {
 <style>
 .identity {
     text-align: right;
+}
+.dl-button {
+    float: right;
 }
 </style>
