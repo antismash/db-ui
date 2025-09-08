@@ -1,5 +1,5 @@
 export const downloadTsv = (
-	data: object[],
+	data: Record<string, any>[],
 	filename: string,
 	headers?: string[],
 	separator?: string,
