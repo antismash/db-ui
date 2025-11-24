@@ -4,6 +4,13 @@ import { defineStore } from "pinia";
 export const useCitationsStore = defineStore("citations", () => {
     const citations = ref([
         {
+            title: "The antiSMASH database version 5",
+            authors: ["Kai Blin", "Simon Shaw", "Marnix H. Medema", "Tilmann Weber"],
+            journal: "Nucleic Acids Research",
+            year: 2025,
+            doi: "10.1093/nar/gkaf1210",
+        },
+        {
             title: "The antiSMASH database version 4: additional genomes and BGCs, new sequence-based searches and more",
             authors: ["Kai Blin", "Simon Shaw", "Marnix H. Medema", "Tilmann Weber"],
             journal: "Nucleic Acids Research",

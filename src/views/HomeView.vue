@@ -48,9 +48,7 @@ const citation = store.latest;
         <InfoText />
 
         <p style="text-align: center">
-            <strong class="well"
-                >This is the antiSMASH database version 5beta1, last updated 2025-06-23.</strong
-            >
+            <strong class="well">This is the antiSMASH database version 5, last updated 2025-11-15.</strong>
         </p>
         <h4>To cite the antiSMASH database, please reference</h4>
         <CitationItem
